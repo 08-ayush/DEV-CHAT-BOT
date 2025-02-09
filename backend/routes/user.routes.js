@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import * as userController from '../controllers/userController.js';
+import * as userController from '../controllers/user.Controller.js';
 import { body } from 'express-validator';
 import * as authMiddleware from '../middleware/auth.middleware.js';
 
