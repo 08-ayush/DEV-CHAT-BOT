@@ -13,19 +13,14 @@ const Home = () => {
 
   function createProject(e) {
     e.preventDefault();
-    console.log({ projectName });
-
     axios
-      .post("/project/create", {
-        name: projectName,
-      })
+      .post("/project/create", { name: projectName })
       .then((res) => {
-        console.log(res);
+        setProject([...project, res.data.project]); // Add new project to state
         setIsModalOpen(false);
+        setProjectName(""); // Clear input field
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   }
 
   useEffect(() => {
@@ -38,7 +33,6 @@ const Home = () => {
         console.log(err);
       });
   }, []);
- 
 
   return (
     <main className="p-4">
