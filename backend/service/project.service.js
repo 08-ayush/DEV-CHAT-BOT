@@ -76,61 +76,35 @@ export const addUsersToProject = async ({ projectId, users, userId }) => {
   }
 
   const updatedProject = await projectModel.findOneAndUpdate(
-    {
-      _id: projectId,
-    },
+    { _id: projectId }, // Condition: Find the project with this ID
     {
       $addToSet: {
+        // Update operation: Add new users to the `users` array so that dupliacte value will not come
         users: {
-          $each: users,
+          $each: users, // Add multiple users from the `users` array
         },
       },
     },
-    {
-      new: true,
-    }
+    { new: true } // Return the updated document after the update
   );
 
   return updatedProject;
 };
 
-
 export const getProjectById = async ({ projectId }) => {
-    if (!projectId) {
-        throw new Error("projectId is required")
-    }
+  if (!projectId) {
+    throw new Error("projectId is required");
+  }
 
-    if (!mongoose.Types.ObjectId.isValid(projectId)) {
-        throw new Error("Invalid projectId")
-    }
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    throw new Error("Invalid projectId");
+  }
 
-    const project = await projectModel.findOne({
-        _id: projectId
-    }).populate('users')
-
-    return project;
-}
-
-export const updateFileTree = async ({ projectId, fileTree }) => {
-    if (!projectId) {
-        throw new Error("projectId is required")
-    }
-
-    if (!mongoose.Types.ObjectId.isValid(projectId)) {
-        throw new Error("Invalid projectId")
-    }
-
-    if (!fileTree) {
-        throw new Error("fileTree is required")
-    }
-
-    const project = await projectModel.findOneAndUpdate({
-        _id: projectId
-    }, {
-        fileTree
-    }, {
-        new: true
+  const project = await projectModel
+    .findOne({
+      _id: projectId,
     })
+    .populate("users");
 
-    return project;
-}
+  return project;
+};
